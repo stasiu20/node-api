@@ -8,24 +8,24 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'TodoApp';
 
 // Use connect method to connect to the server
-MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
+let dbN = () => MongoClient.connect(url, { useNewUrlParser: true }).then((client) => {
+  return client.db(dbName);
+}).catch((err) => {
+  console.log(err);
+}); 
+  
+  // const collection = db.collection('Todos');
 
-  const db = client.db(dbName);
-
-  const collection = db.collection('Todos');
-
-  findByArgs(collection, {done: false}, (err, res) => {
-    assert.equal(err, null);
-    console.log(res);
-  });
+  // findByArgs(collection, {done: false}, (err, res) => {
+  //   assert.equal(err, null);
+  //   console.log(res);
+  // });
   // insertDocument(db, (res)=>{
   //   console.log(res);
     
   // });  
-  client.close();
-});
+//   client.close();
+// );
 
 const insertDocument = (db, callback) => {
     const collection = db.collection('Todos');
@@ -47,3 +47,4 @@ const findByArgs = (collection, args, callback) => {
   });
 
 }
+module.exports.dbN = dbN;
