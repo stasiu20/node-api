@@ -1,6 +1,6 @@
 const {mongoose,Schema} = require('../db/db');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
-
+const {ObjectId} = require('mongodb');
 
 var todoSchema = new Schema({
     text: {
@@ -42,7 +42,24 @@ var todoSave = (content) => {
     })
 };
 
+var todoFindById = (id) => {
+    return new Promise((resolve, reject) => {
+        if(!ObjectId.isValid(id)) {
+            reject({status:400, text:'Id jest nie poprawne'});
+        }
+
+        Todo.findById(id)
+            .then((res) => {
+                resolve(res);
+            })
+            .catch((err) => {
+                reject({status:400, text:`Coś poszło nie tak ${err}`});
+            });
+    });
+}
+
 module.exports = {
     Todo,
-    todoSave
+    todoSave,
+    todoFindById
 }

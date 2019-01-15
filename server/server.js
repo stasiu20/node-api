@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var {User, UserSave} = require('./models/user');
-var {Todo, todoSave} = require('./models/todo');
+var {Todo, todoSave, todoFindById} = require('./models/todo');
 const assert = require('assert');
 
 const port = process.env.PORT || 3000;
@@ -28,6 +28,27 @@ app.get('/', (req, res) => {
                 res.status(400).send(err);
             })
         
+    })
+    .get('/todos/:userId', (req,res) => {
+        
+        var userId = req.params.userId;
+
+        if(!userId) {
+            res.status(400).send('Musisz podać id');
+        }
+
+        todoFindById(userId)
+            .then((response) => {
+                if(!response) {
+                    res.status(404).send('Nie ma użytkownika o takim id');
+                }
+                res.send({response});
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(err.status).send(err.text);
+            });
+
     })
     .listen(port, () => {
         console.log("Started on port 3000");
