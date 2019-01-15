@@ -48,3 +48,4 @@ const findByArgs = (collection, args, callback) => {
 
 }
 module.exports.dbN = dbN;
+module.exports.ObjectID = ObjectID;
