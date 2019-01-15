@@ -1,11 +1,12 @@
 const {mongoose,Schema} = require('../db/db');
 const beautifyUnique = require('mongoose-beautiful-unique-validation');
 
+
 var todoSchema = new Schema({
     text: {
         type: String, 
         required: true,
-        unique: true
+        // unique: true
     },
     done:{
         type: Boolean,

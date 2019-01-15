@@ -24,6 +24,9 @@ app.listen(port, () => {
     console.log("Started on port 3000");
 });
 
+
+module.exports = {app};
+
 // UserSave('michal.zoltowski@rrrr.pl', (err, res) => {
 //     assert.equal(err, null, `Mamy problem ${JSON.stringify(err, undefined,2)}`);
 //     console.log(res);
