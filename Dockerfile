@@ -17,7 +17,7 @@ COPY --chown=node:node . .
 
 USER node
 
-CMD [ "npm","run", "test-watch"]
+CMD [ "nodemon",  "playground/mongoos-queries.js"]
 
 # żeby zbudować obraz po zmianach w package.json docker build -t test .
 # żeby wystartiwać testy docker run -p 8000:3001 -v /home/michal/nodejs/node-test/:/home/node/app test
