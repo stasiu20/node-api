@@ -13,16 +13,25 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.send('Hello World');
-});
-app.post('/todos', (req, res) => {
-    todoSave(req.body)
-    .then((response) => res.send(response))
-    .catch((err) => res.status(400).send(err));
-});
-
-app.listen(port, () => {
-    console.log("Started on port 3000");
-});
+    })
+    .post('/todos', (req, res) => {
+        todoSave(req.body)
+        .then((response) => res.send(response))
+        .catch((err) => res.status(400).send(err));
+    })
+    .get('/todos', (req, res)=>{
+        var todos = Todo.find()
+            .then((todos) => {
+                res.send({todos});
+            })
+            .catch((err) => {
+                res.status(400).send(err);
+            })
+        
+    })
+    .listen(port, () => {
+        console.log("Started on port 3000");
+    });
 
 
 module.exports = {app};
