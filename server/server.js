@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var {User, UserSave} = require('./models/user');
-var {Todo, todoSave, todoFindById} = require('./models/todo');
+var {Todo, todoSave, todoFindById,todoFindByIdAndDelete} = require('./models/todo');
 const assert = require('assert');
 
 const port = process.env.PORT || 3000;
@@ -29,15 +29,15 @@ app.get('/', (req, res) => {
             })
         
     })
-    .get('/todos/:userId', (req,res) => {
+    .get('/todos/:todosId', (req,res) => {
         
-        var userId = req.params.userId;
+        var todosId = req.params.todosId;
 
-        if(!userId) {
+        if(!todosId) {
             res.status(400).send('Musisz podać id');
         }
 
-        todoFindById(userId)
+        todoFindById(todosId)
             .then((response) => {
                 if(!response) {
                     res.status(404).send('Nie ma użytkownika o takim id');
@@ -48,6 +48,23 @@ app.get('/', (req, res) => {
                 res.status(err.status).send(err.text);
             });
 
+    }).delete('/todos/:todosId', (req, res) => {
+        var todosId = req.params.todosId;
+
+        if(!todosId) {
+            res.status(400).send('Musisz podać id');
+        }
+
+        todoFindByIdAndDelete(todosId)
+            .then((response) => {
+                if(!response) {
+                    res.status(404).send('Nie ma todo o takim id');
+                }
+                res.send({response});
+            })
+            .catch((err) => {
+                res.status(err.status).send(err.text);
+            });
     })
     .listen(port, () => {
         console.log(`Started at port ${port}`);
