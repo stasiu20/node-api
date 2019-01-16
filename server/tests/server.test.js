@@ -92,10 +92,38 @@ describe('GET /todos/:id', () => {
             .end(done);
     });
 
-    it('should return 400', (done) => {
+    it('should return 404', (done) => {
         request(app)
             .get('/todos/123')
-            .expect(400)
+            .expect(404)
+            .end(done);
+    });
+
+});
+
+describe('DELETE /todos/:id', () => {
+    it('should remove one todo', (done) => {
+        var id = todos[0]._id.toHexString(); 
+        request(app)
+            .delete(`/todos/${id}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.response._id).toBe(id);
+            }).end(done);
+    });
+    
+    it('should return 404', (done) => {
+        var id = new ObjectId();
+        request(app)
+            .delete(`/todos/${id.toHexString()}`)
+            .expect(404)
+            .end(done);
+    });
+
+    it('should return 404', (done) => {
+        request(app)
+            .get('/todos/123')
+            .expect(404)
             .end(done);
     });
 

@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
         var todosId = req.params.todosId;
 
         if(!todosId) {
-            res.status(400).send('Musisz podać id');
+            res.status(404).send('Musisz podać id');
         }
 
         todoFindByIdAndDelete(todosId)
