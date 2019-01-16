@@ -80,7 +80,7 @@ describe('GET /todos/:id', () => {
             .get(`/todos/${id}`)
             .expect(200)
             .expect((res) => {
-                expect(res.body.response._id).toBe(id);
+                expect(res.body.todo._id).toBe(id);
             }).end(done);
     });
     
@@ -103,13 +103,25 @@ describe('GET /todos/:id', () => {
 
 describe('DELETE /todos/:id', () => {
     it('should remove one todo', (done) => {
-        var id = todos[0]._id.toHexString(); 
+        var id = todos[1]._id.toHexString(); 
         request(app)
             .delete(`/todos/${id}`)
             .expect(200)
             .expect((res) => {
-                expect(res.body.response._id).toBe(id);
-            }).end(done);
+                expect(res.body.todo._id).toBe(id);
+            }).end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                Todo.findById(id)
+                    .then((res) => {
+                        expect(res).toNotExist();
+                        done();
+                    })
+                    .catch((err)=> {
+                        return done(err)
+                    });
+            });
     });
     
     it('should return 404', (done) => {
