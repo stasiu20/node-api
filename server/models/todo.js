@@ -45,7 +45,7 @@ var todoSave = (content) => {
 var todoFindById = (id) => {
     return new Promise((resolve, reject) => {
         if(!ObjectId.isValid(id)) {
-            reject({status:400, text:'Id jest nie poprawne'});
+            reject({status:404, text:'Id jest nie poprawne'});
         }
 
         Todo.findById(id)
@@ -61,7 +61,7 @@ var todoFindById = (id) => {
 var todoFindByIdAndDelete = (id) => {
     return new Promise((resolve, reject) => {
         if(!ObjectId.isValid(id)) {
-            reject({status:400, text:'Id jest nie poprawne'});
+            reject({status:404, text:'Id jest nie poprawne'});
         }
 
         Todo.findByIdAndDelete(id).then((res) => {
