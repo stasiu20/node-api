@@ -45,7 +45,6 @@ app.get('/', (req, res) => {
                 res.send({response});
             })
             .catch((err) => {
-                console.log(err);
                 res.status(err.status).send(err.text);
             });
 
