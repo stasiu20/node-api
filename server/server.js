@@ -38,11 +38,11 @@ app.get('/', (req, res) => {
         }
 
         todoFindById(todosId)
-            .then((response) => {
-                if(!response) {
+            .then((todo) => {
+                if(!todo) {
                     res.status(404).send('Nie ma użytkownika o takim id');
                 }
-                res.send({response});
+                res.send({todo});
             })
             .catch((err) => {
                 res.status(err.status).send(err.text);
@@ -56,11 +56,11 @@ app.get('/', (req, res) => {
         }
 
         todoFindByIdAndDelete(todosId)
-            .then((response) => {
-                if(!response) {
+            .then((todo) => {
+                if(!todo) {
                     res.status(404).send('Nie ma todo o takim id');
                 }
-                res.send({response});
+                res.send({todo});
             })
             .catch((err) => {
                 res.status(err.status).send(err.text);
