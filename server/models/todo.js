@@ -72,9 +72,27 @@ var todoFindByIdAndDelete = (id) => {
     });
 }
 
+var todoFindByIdAndUpdate = (id, params) => {
+    return new Promise((resolve, rejects) => {
+        if(!ObjectId.isValid(id)) {
+            reject({status:404, text:'Id jest nie poprawne'});
+        }
+
+        Todo.findByIdAndUpdate(id,{$set: params}, {new: true}).then((res) => {
+            if(!res) {
+                reject({status:404, text:'Nie ma todo o takim id'});
+            }
+            resolve(res);
+        }).catch((err) => {
+            reject({status:400, text:`Coś poszło nie tak ${err}`});
+        })
+    });
+}
+
 module.exports = {
     Todo,
     todoSave,
     todoFindById,
-    todoFindByIdAndDelete
+    todoFindByIdAndDelete,
+    todoFindByIdAndUpdate
 }

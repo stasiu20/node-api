@@ -1,8 +1,9 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const _= require('lodash');
 
 var {User, UserSave} = require('./models/user');
-var {Todo, todoSave, todoFindById,todoFindByIdAndDelete} = require('./models/todo');
+var {Todo, todoSave, todoFindById,todoFindByIdAndDelete, todoFindByIdAndUpdate} = require('./models/todo');
 const assert = require('assert');
 
 const port = process.env.PORT || 3000;
@@ -61,6 +62,29 @@ app.get('/', (req, res) => {
                     res.status(404).send('Nie ma todo o takim id');
                 }
                 res.send({todo});
+            })
+            .catch((err) => {
+                res.status(err.status).send(err.text);
+            });
+    })
+    .patch('/todos/:id', (req, res) => {
+        var id = req.params.id;
+        var body = _.pick(req.body, ['text', 'done']);
+
+        if(!id) {
+            res.status(404).send('Musisz podać id');
+        }
+
+        if(_.isBoolean(body.done) && body.done) {
+            body.doneAt = new Date().getTime();
+        } else {
+            body.done = false;
+            body.doneAt = null;
+        }
+
+        todoFindByIdAndUpdate(id, body)
+            .then((todo) => { 
+                res.send(todo);
             })
             .catch((err) => {
                 res.status(err.status).send(err.text);
