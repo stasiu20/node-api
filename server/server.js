@@ -84,7 +84,7 @@ app.get('/', (req, res) => {
 
         todoFindByIdAndUpdate(id, body)
             .then((todo) => { 
-                res.send(todo);
+                res.send({todo});
             })
             .catch((err) => {
                 res.status(err.status).send(err.text);
